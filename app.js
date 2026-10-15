@@ -1,4 +1,4 @@
-﻿const MENU = [
+let MENU = [
   {
     id: 'sicak-icecekler',
     title: 'Sıcak İçecekler',
@@ -169,6 +169,8 @@ const clearBtnEl = document.getElementById('clear-btn');
 let activeCategoryId = null;
 let query = '';
 
+const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+
 const formatPrice = (price) => `${Number(price).toLocaleString('tr-TR')} TL`;
 
 function getCategoryFromUrl() {
@@ -200,8 +202,8 @@ function createPhotoCategoryButtons() {
     card.className = 'photo-cat-btn';
     card.dataset.category = category.id;
     card.innerHTML = `
-      <img src="${category.photo}" alt="${category.title}" />
-      <span class="photo-cat-title">${category.title}</span>
+      <img src="${escapeHtml(category.photo || 'assets/coffee.jpg')}" alt="${escapeHtml(category.title)}" />
+      <span class="photo-cat-title">${escapeHtml(category.title)}</span>
     `;
     photoCategoryGridEl.appendChild(card);
   }
@@ -253,11 +255,12 @@ function renderMenu() {
 
   const itemsMarkup = filteredItems
     .map((item) => {
-      const noteMarkup = item.note ? `<div class="item-note">${item.note}</div>` : '';
+      const noteMarkup = item.note ? `<div class="item-note">${escapeHtml(item.note)}</div>` : '';
       return `
-        <div class="item-row">
+        <div class="item-row ${item.photo ? 'has-photo' : ''}">
+          ${item.photo ? `<img class="product-photo" src="${escapeHtml(item.photo)}" alt="" loading="lazy" />` : ''}
           <div>
-            <div class="item-name">${item.name}</div>
+            <div class="item-name">${escapeHtml(item.name)}</div>
             ${noteMarkup}
           </div>
           <div class="item-price">${formatPrice(item.price)}</div>
@@ -269,7 +272,7 @@ function renderMenu() {
   menuRootEl.innerHTML = `
     <article class="menu-category">
       <div class="menu-head">
-        <h3>${category.title}</h3>
+        <h3>${escapeHtml(category.title)}</h3>
         <span class="item-count">${filteredItems.length} ürün</span>
       </div>
       <div class="item-list">${itemsMarkup}</div>
@@ -307,6 +310,23 @@ window.addEventListener('popstate', () => {
   renderByRoute();
 });
 
+async function refreshMenu() {
+  if (!window.MAHALLE_API) return;
+  try {
+    const response = await fetch(window.MAHALLE_API + '/api/menu', { cache: 'no-store', signal: AbortSignal.timeout(10000) });
+    if (!response.ok) return;
+    const data = await response.json();
+    if (!Array.isArray(data.categories) || !data.categories.every(c => c.id && c.title && Array.isArray(c.items))) return;
+    MENU = data.categories;
+    createPhotoCategoryButtons();
+    renderByRoute();
+    if (data.updatedAt) document.getElementById('menu-updated').textContent = 'Mahalle Cafe Menü • Son güncelleme: ' + new Date(data.updatedAt).toLocaleDateString('tr-TR');
+  } catch { /* Bağlantı sorunu olduğunda mevcut menü kullanılabilir. */ }
+}
 createPhotoCategoryButtons();
 setCategoryInUrl(getCategoryFromUrl(), { replace: true });
 renderByRoute();
+refreshMenu();
+document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshMenu(); });
+setInterval(() => { if (!document.hidden) refreshMenu(); }, 60000);
+document.getElementById('home-btn').addEventListener('click', () => { setCategoryInUrl(null); renderByRoute(); });

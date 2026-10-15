@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --surface: rgba(255, 255, 255, 0.9);
   --text: #111827;
   --muted: #4b5563;
@@ -567,3 +567,8 @@ h1 {
     margin-bottom: 10px;
   }
 }
+
+.item-row.has-photo { grid-template-columns: 62px minmax(0, 1fr) auto; align-items: center; }
+.product-photo { width: 62px; height: 62px; object-fit: cover; border-radius: 10px; background: #f3f4f6; }
+.toolbar input { min-width: 0; width: 100%; }
+@media (max-width: 640px) { .toolbar { align-items: stretch; } .item-row.has-photo { grid-template-columns: 48px minmax(0, 1fr) auto; gap: 8px; } .product-photo { width: 48px; height: 48px; } }

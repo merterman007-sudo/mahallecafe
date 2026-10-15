@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f7f5f0"><meta name="robots" content="noindex, nofollow">
+  <title>Menü Yönetimi · Mahalle Cafe</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <main id="login" class="login-shell">
+    <section class="login-card">
+      <a class="brand" href="../"><span class="brand-icon">m.</span><span>mahalle<span class="brand-sub">CAFE · MENÜ YÖNETİMİ</span></span></a>
+      <div class="login-illustration" aria-hidden="true">☕</div><p class="eyebrow">HER ŞEY ELİNİN ALTINDA</p>
+      <h1>Menüne hoş geldin.</h1><p class="muted">Fiyatları güncelle, yeni lezzetler ekle.<br>Mahalle’nin menüsü hep güncel kalsın.</p>
+      <form id="login-form"><label for="password">Yönetici şifresi</label><div class="password-wrap"><input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Şifreni gir"><button id="show-password" type="button" class="text-button" aria-label="Şifreyi göster">Göster</button></div><p id="login-error" class="error" role="alert"></p><button id="login-button" class="button primary wide" type="submit">Panele giriş yap <span aria-hidden="true">→</span></button></form>
+      <a class="login-back" href="../">← Müşteri menüsüne dön</a>
+    </section><p class="login-foot">Mahalle Cafe · Küçük dokunuşlar, taze bir menü.</p>
+  </main>
+  <div id="dashboard" hidden>
+    <aside class="sidebar"><a class="brand" href="../"><span class="brand-icon">m.</span><span>mahalle<span class="brand-sub">CAFE · YÖNETİM</span></span></a><p class="nav-label">ÇALIŞMA ALANI</p><nav aria-label="Yönetim"><button class="nav-item active" data-view="products">▦ <span>Ürünler</span></button><button class="nav-item" data-view="categories">◫ <span>Kategoriler</span></button></nav><div class="sidebar-note"><span class="live-dot"></span> Menün yayında<p>Kaydettiğin değişiklikler müşteri menüsüne hemen yansır.</p><a href="../" target="_blank" rel="noopener">Menüyü görüntüle ↗</a></div><button id="logout" class="logout">Çıkış yap ↗</button></aside>
+    <div class="workspace"><header class="topbar"><span>Mahalle Cafe <span class="slash">/</span> <strong>Menü yönetimi</strong></span><a href="../" target="_blank" rel="noopener" class="preview-link">Menüyü aç ↗</a></header>
+      <main class="main-content"><section class="page-heading"><div><p class="eyebrow">GÜZEL BİR GÜN, GÜNCEL BİR MENÜ</p><h1>Menü, senin elinde<span class="orange">.</span></h1><p class="muted">Fiyatları düzenle, lezzetleri çoğalt. Hepsi bu kadar.</p></div><button id="add-product" class="button primary">＋ Yeni ürün</button></section>
+        <section class="stats" aria-label="Menü özeti"><div class="stat"><span class="stat-symbol">▦</span><div><strong id="product-count">—</strong><span>Toplam ürün</span></div></div><div class="stat"><span class="stat-symbol green">◫</span><div><strong id="category-count">—</strong><span>Kategori</span></div></div><div class="stat"><span class="stat-symbol yellow">◷</span><div><strong id="update-time">—</strong><span>Son kayıt</span></div></div></section>
+        <div class="mobile-tabs"><button class="active" data-view="products">Ürünler</button><button data-view="categories">Kategoriler</button><button id="mobile-logout">Çıkış</button></div>
+        <section id="products-view" class="content-card"><div class="section-title"><div><h2>Ürünler</h2><p class="muted">Fiyat alanına dokunarak hızlıca güncelle.</p></div><span id="visible-count" class="count-badge"></span></div><div class="search-wrap"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Bir ürün ara…" aria-label="Ürün ara"></div><div id="category-filters" class="filter-row" aria-label="Kategori filtresi"></div><div id="product-list"></div></section>
+        <section id="categories-view" class="content-card" hidden><div class="section-title"><div><h2>Kategoriler</h2><p class="muted">Menünün sırasını ve kategori görsellerini düzenle.</p></div><button id="add-category" class="button secondary">＋ Kategori</button></div><div id="category-list"></div></section>
+        <p id="load-error" class="error" role="alert"></p><div id="recovery" hidden><button class="button secondary" id="reload">Menüyü yeniden yükle</button></div>
+      </main>
+      <footer class="savebar"><div><span id="save-dot" class="live-dot"></span><strong id="save-status">Tüm değişiklikler kaydedildi</strong><small id="save-detail">Menün güncel ve yayında.</small></div><div class="save-actions"><button id="discard" class="button ghost" disabled>Vazgeç</button><button id="publish" class="button primary" disabled>Değişiklikleri kaydet <span aria-hidden="true">↗</span></button></div></footer>
+    </div>
+  </div>
+  <dialog id="editor"><form id="editor-form"><div class="dialog-header"><div><p class="eyebrow">MENÜNE BİR DOKUNUŞ</p><h2 id="editor-title">Ürün düzenle</h2></div><button type="button" class="icon-button close-editor" aria-label="Pencereyi kapat">×</button></div><div id="editor-fields"></div><p id="editor-error" class="error" role="alert"></p><div class="dialog-actions"><button type="button" class="button ghost close-editor">Vazgeç</button><button id="editor-submit" type="submit" class="button primary">Değişikliği ekle</button></div></form></dialog>
+  <div id="toast" role="status" class="toast" hidden></div>
+  <script src="../api-config.js"></script><script src="admin.js"></script>
+</body></html>
